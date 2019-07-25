@@ -1,6 +1,7 @@
 package co.grandcircus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -10,7 +11,7 @@ public class ShoppingList {
 	public static void main(String[] args) {
 		// initial setup
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Welcome to Alfred's Outfitters!");
+		System.out.println("Welcome to Alfred's Outfitters!\n");
 		Map<String, Double> items = new HashMap<>();
 		ArrayList<String> cartItems = new ArrayList<String>();
 		ArrayList<Double> cartPrices = new ArrayList<Double>();
@@ -20,7 +21,6 @@ public class ShoppingList {
 		double average = 0;
 		String cont = "y";
 
-		// main interface
 		while (cont.equalsIgnoreCase("y")) {
 			buildList(items);
 			displayList(items);
@@ -97,14 +97,17 @@ public class ShoppingList {
 			cont = Validator.getStringMatchingRegex(scan, "Continue shopping? (y/n) ", "[YyNn]");
 		}
 		// show the cart
-		System.out.println("Here's your final list:");
+		System.out.println("\nHere's your final list:");
 		// System.out.println(cartQuantity);
 		for (int i = 0; i < cartPosition; i++) {
 			System.out.printf("%-22s %2s%2.2f\n", cartItems.get(i), "$", cartPrices.get(i));
 			average += cartPrices.get(i);
 		}
-		System.out.printf("%-22s %2s%2.2f", "Average cost of items:", "$", (average / cartPrices.size()));
+		System.out.printf("\n%-22s %2s%2.2f\n", "Average cost of items:", "$", (average / cartPrices.size()));
 
+		Collections.sort(cartPrices);
+		lowestCost(cartPrices);
+		highestCost(cartPrices);
 	}
 
 	// build the item list
@@ -129,5 +132,17 @@ public class ShoppingList {
 			System.out.printf("%-22s %2s%2.2f\n", key, " $", items.get(key));
 		}
 		return;
+	}
+
+	// finds lowest cost item
+	public static ArrayList<Double> lowestCost(ArrayList<Double> cartPrices) {
+		System.out.printf("%-22s %2s%2.2f\n", "Lowest cost item:", "$", (cartPrices.get(0)));
+		return cartPrices;
+	}
+
+	// finds highest cost item
+	public static ArrayList<Double> highestCost(ArrayList<Double> cartPrices) {
+		System.out.printf("%-22s %2s%2.2f\n", "Highest cost item:", "$", (cartPrices.get(cartPrices.size() - 1)));
+		return cartPrices;
 	}
 }
